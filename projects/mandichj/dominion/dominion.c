@@ -737,7 +737,7 @@ void playBaron( int choice1, struct gameState *state, int currentPlayer)
 
 void playMinion(int choice1, int choice2,  struct gameState *state, int handPos, int currentPlayer)
 {
-	int j;
+	//int j;
 	//+1 action
 	state->numActions++;
 
@@ -922,12 +922,12 @@ int playMine(int choice1, int choice2, struct gameState *state, int handPos, int
 	int i;
 	j = state->hand[currentPlayer][choice1];  //store card we will trash
 
-	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
+	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] >= gold)//BUGGED to not allow gold 
 	{
 		return -1;
 	}
 
-	if (choice2 > treasure_map || choice2 < curse)
+	if (choice2 < copper || choice2 > gold||choice2 == sea_hag)//fixed bug BUGGED to allow sea had to be gained when trading ing high enough value treasures
 	{
 		return -1;
 	}
