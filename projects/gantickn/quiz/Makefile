@@ -4,14 +4,14 @@
 #11/10/2019
 
 
-CFLAGS= -Wall -fpic -coverage -lm -std=c99
+CFLAGS= -std=c99 -fprofile-arcs -ftest-coverage -fpic -lm 
 
 
 default: testme
 
 testme:
 	gcc -o testme testme.c $(CFLAGS)
-
+	
 clean:
 	rm testme
 
@@ -20,5 +20,8 @@ cleanall:
 
 	
 #an example execution would be to navigate to the diretory where this makefile is located
+
 #command[1]: make
 #command[2]: ./testme
+#command[3]: gcov testme.c
+#command[4]: make cleanall

@@ -6,7 +6,7 @@
 char inputChar()
 {
 	//rand() % (max_num + 1 - min_num) + min_num
-    int i = (rand() % (126 - 32 +1) + 32;	//generates a random number between 32 - 126 (printable ascii range)
+    int i = rand() % (126 - 32 +1) + 32;	//generates a random number between 32 - 126 (printable ascii range)
 	char c = (char)i;			//cast above num to a random char with that value
 	
     return c;
@@ -15,16 +15,19 @@ char inputChar()
 char *inputString()
 {
 	int i = 6;
-	c* str[i];
-	str[i-1] = '\0'
+	int m = 0;
+	char *str[i];
+	str[i-1] = '\0';
+	int k = rand() % 50;
 	
 	for( int j = 0; j < i-1; j++) {
-		str[j] = rand() % (126 - 32 +1) + 32;
+		m = rand() % (126 - 32 +1) + 32;
+		str[j] = (char)m;
 	}
 	
-	int k = rand() % 50;
+	
 	if (k == 0) {
-		str = "reset";
+		strcpy(str, "reset");
 	}
 	
     return str;
