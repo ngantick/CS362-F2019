@@ -967,7 +967,7 @@ int cardEffectMine(int card, int choice1, int choice2, int choice3, struct gameS
 	{
 		if (state->hand[currentPlayer][i] == j)
 		{
-			discardCard(i, currentPlayer, state, 0);
+			discardCard(i, currentPlayer, state, 0);	//Bug here, the 0 should be a 1 to flag that this card is trashed
 			break;
 		}
 	}
