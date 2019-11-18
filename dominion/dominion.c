@@ -684,11 +684,11 @@ int getCost(int cardNumber)
 int cardEffectBaron (int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
 	/*This function is refactored for Assignemnt 2*/
-	/*var card, choices1, handPos, and bonus are not used but passed for consistency*/
+	/*var card, choices2&3, handPos, and bonus are not used but passed for consistency*/
 	int currentPlayer = whoseTurn(state);
 	
 	state->numBuys += 2;//Increase buys by 1!		/*Baron Bug #1, increased the incrementation by an additional 1 in code only (not documentation)*/
-	if (choice1 < 0) { //Boolean true or going to discard an estate		/*Baron Bug #2, changed '>' to '<', makeing the boolean statement always false*/
+	if (choice1 > 0) { //Boolean true or going to discard an estate		/*Baron Bug #2(disabled), changed '>' to '<', makeing the boolean statement always false*/
 		int p = 0;//Iterator for hand!
 		int card_not_discarded = 1;//Flag for discard set!
 		while(card_not_discarded) {
@@ -868,9 +868,9 @@ int cardEffectTribute(int card, int choice1, int choice2, int choice3, struct ga
 	/*var card, choices 1, 2 , and 3, handPos, and bonus are not used but passed for consistency*/
 	int i;
 	int currentPlayer = whoseTurn(state);
-	int nextPlayer = currentPlayer + 2;			/*Tribute Bug #1, increased the player incrementation from '1' to '2', changing which players get effected by tribute*/
+	int nextPlayer = currentPlayer + 1;			/*Tribute Bug #1(disabled), increased the player incrementation from '1' to '2', changing which players get effected by tribute*/
 	if (nextPlayer > (state->numPlayers - 1)) {
-        nextPlayer = 1;							/*Tribute Bug #2, changed the default player number from '0' to '1', making it so tribute can't affect player0*/
+        nextPlayer = 0;							/*Tribute Bug #2(disabled), changed the default player number from '0' to '1', making it so tribute can't affect player0*/
     }
 	int tributeRevealedCards[2] = {-1, -1};
 	
@@ -963,7 +963,7 @@ int cardEffectMine(int card, int choice1, int choice2, int choice3, struct gameS
 	discardCard(handPos, currentPlayer, state, 0);
 
 	//discard trashed card
-	for (i = 0; i < state->handCount[currentPlayer]; i++)
+	for (int i = 0; i < state->handCount[currentPlayer]; i++)
 	{
 		if (state->hand[currentPlayer][i] == j)
 		{
@@ -993,7 +993,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     if (nextPlayer > (state->numPlayers - 1)) {
         nextPlayer = 0;
     }
-	int irrVal;
+	int irrVal = 0;
 
     //uses switch to select card and perform actions
     switch( card )
