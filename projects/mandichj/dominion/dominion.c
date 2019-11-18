@@ -688,32 +688,37 @@ void playBaron( int choice1, struct gameState *state, int currentPlayer)
 	if (choice1 > 0) { //Boolean true or going to discard an estate
 		int p = 0;//Iterator for hand!
 		int card_not_discarded = 1;//Flag for discard set!
+
 		while (card_not_discarded) {
 			if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
 				state->coins += 4;//Add 4 coins to the amount of coins
+		
 				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 				//state->discardCount[currentPlayer]++; BUGGED to not increase the number of discarded cards when an estate is discarded, this will only matter in a niche interaction with baron and other cards in the same turn
 				for (; p < state->handCount[currentPlayer]; p++) {
 					state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
 				}
+		
 				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
 				state->handCount[currentPlayer]--;
 				card_not_discarded = 0;//Exit the loop
 			}
 			else if (p > state->handCount[currentPlayer]) {
+			
 				if (DEBUG) {
 					printf("No estate cards in your hand, invalid choice\n");
 					printf("Must gain an estate if there are any\n");
 				}
 				if (supplyCount(estate, state) > 0) {
+	
 					gainCard(estate, state, 0, currentPlayer);
-
 					state->supplyCount[estate]--;//Decrement estates
 					if (supplyCount(estate, state) == 0) {
 						isGameOver(state);
 					}
+				
 				}
-				//card_not_discarded = 0; //Exit the loop    BUGGED to infinitely loop if a player tries to discard an estate without having one
+				card_not_discarded = 0; //Exit the loop   REMOVED for rand testing: BUGGED to infinitely loop if a player tries to discard an estate without having one
 			}
 
 			else {
@@ -722,15 +727,16 @@ void playBaron( int choice1, struct gameState *state, int currentPlayer)
 
 		}
 	}
+	
 	else {
 		if (supplyCount(estate, state) > 0) {
 			gainCard(estate, state, 0, currentPlayer);//Gain an estate
-
+			
 			state->supplyCount[estate]--;//Decrement Estates
 			if (supplyCount(estate, state) == 0) {
 				isGameOver(state);
 			}
-		}
+		};
 	}
 	
 }
@@ -740,10 +746,8 @@ void playMinion(int choice1, int choice2,  struct gameState *state, int handPos,
 	//int j;
 	//+1 action
 	state->numActions++;
-
 	//discard card from hand
 	discardCard(handPos, currentPlayer, state, 0);
-
 	if (choice1)
 	{
 		state->coins = state->coins + 3; //BUGGED to be 3 instead of 2, test suite must compare coin count before and after minion to catch this
@@ -753,9 +757,8 @@ void playMinion(int choice1, int choice2,  struct gameState *state, int handPos,
 		//discard hand
 		while (numHandCards(state) > 0)
 		{
-			discardCard(handPos, currentPlayer, state, 0);
+			discardCard(0, currentPlayer, state, 0);
 		}
-
 		//draw 4
 		int i;
 		for (i = 0; i < 4; i++)
@@ -856,8 +859,10 @@ int playAmbassador(int choice1, int choice2, struct gameState *state, int handPo
 
 void playTribute(struct gameState *state,int* tributeRevealedCards, int currentPlayer,int nextPlayer)
 {
+
 	int i;
-	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 0) { //BUGGED to be 0 instead of 1 causing the instance where there is only 1 card in the discard and draw piles to cause inintended behavior
+	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) { //REMOVED:BUGGED to be 0 instead of 1 causing the instance where there is only 1 card in the discard and draw piles to cause inintended behavior
+
 		if (state->deckCount[nextPlayer] > 0) {
 			tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 			state->deckCount[nextPlayer]--;
@@ -872,9 +877,11 @@ void playTribute(struct gameState *state,int* tributeRevealedCards, int currentP
 				printf("No cards to reveal\n");
 			}
 		}
+
 	}
 
 	else {
+
 		if (state->deckCount[nextPlayer] == 0) {
 			for (i = 0; i < state->discardCount[nextPlayer]; i++) {
 				state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
@@ -899,7 +906,7 @@ void playTribute(struct gameState *state,int* tributeRevealedCards, int currentP
 		tributeRevealedCards[1] = -1;
 	}
 
-	for (i = 0; i <= 2; i++) {
+	for (i = 0; i <= 2; i++) {//bug here should be <
 		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
 			state->coins += 2;
 		}
@@ -1304,7 +1311,6 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
-
     //if card is not trashed, added to Played pile
     if (trashFlag < 1)
     {
@@ -1315,7 +1321,6 @@ int discardCard(int handPos, int currentPlayer, struct gameState *state, int tra
 
     //set played card to -1
     state->hand[currentPlayer][handPos] = -1;
-
     //remove card from player's hand
     if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
     {
@@ -1349,12 +1354,11 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
     {
         return -1;
     }
-
     //added card for [whoseTurn] current player:
     // toFlag = 0 : add to discard
     // toFlag = 1 : add to deck
     // toFlag = 2 : add to hand
-
+	
     if (toFlag == 1)
     {
         state->deck[ player ][ state->deckCount[player] ] = supplyPos;
@@ -1367,13 +1371,14 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player)
     }
     else
     {
+		
+
+
         state->discard[player][ state->discardCount[player] ] = supplyPos;
         state->discardCount[player]++;
     }
-
     //decrease number in supply pile
     state->supplyCount[supplyPos]--;
-
     return 0;
 }
 
