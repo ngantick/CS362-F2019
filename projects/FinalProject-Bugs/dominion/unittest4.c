@@ -52,4 +52,6 @@ int main()
 		}
 
 	}
+	printf("Testing complete for 'isGameOver fails to check all of the supply' bug.\n");
+	fflush(stdout);
 }

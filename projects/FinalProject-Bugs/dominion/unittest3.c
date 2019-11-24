@@ -35,7 +35,7 @@ int main()
 			G2.hand[G.whoseTurn][0] = remodel;//prepare hand with remodel and a card
 			G2.hand[G.whoseTurn][1] = i;
 
-			if (getCost(i) + 2 > getCost(j))//should cause cardEffect to succeed
+			if (getCost(i) + 2 >= getCost(j))//should cause cardEffect to succeed
 			{
 				my_assert(cardEffect(remodel, 1, j, 0, &G2, 0, 0) == 0, "CardEffect failed but should have succeeded");
 			}

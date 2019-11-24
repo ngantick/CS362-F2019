@@ -33,7 +33,7 @@ int main()
 			G2.hand[G.whoseTurn][0] = mine;//prepare hand with mine and a treasure
 			G2.hand[G.whoseTurn][1] = i;
 
-			if (getCost(i) + 3 > getCost(j))//should cause cardEffect to succeed
+			if (getCost(i) + 3 >= getCost(j))//should cause cardEffect to succeed
 			{
 				my_assert(cardEffect(mine, 1, j, 0, &G2, 0, 0)==0, "CardEffect failed but should have succeeded");
 			}
